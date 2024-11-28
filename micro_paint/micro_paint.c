@@ -116,16 +116,22 @@ void	check_for_rect(t_win *win, t_rect *rect_arr, int x, int y, int i)
 		Ya = y;
 		Ybr = rect_arr->y + win->height;
 		Xbr = rect_arr->x + win->width;
-//		if (((Xtl - Xa) < 1.0) && ((Ytl - Ya) < 1.0))
-//		{
-		
-		if (rect_arr->type != 'R' || rect_arr->type != 'r' || ((rect_arr->width <= 0.00000000) || (rect_arr->height <= 0.00000000)))
-			return (0);
-		if ()
-		{	
-			if (((Xtl <= Xa) && (Xa <= Xbr)) && ((Ytl <= Ya) && (Ya <= Ybr)))
-				win->panel[i] = rect_arr->c;
+		if (rect_arr->type != 'R' && rect_arr->type != 'r' || ((rect_arr->width <= 0.00000000) || (rect_arr->height <= 0.00000000)))	
+		{
+			rect_arr = rect_arr->next;
+			continue ;
 		}
+		if ((((x < rect_arr->x) || (rect_arr->x + rect_arr->width < x)) || (y < rect_arr->y)) || (rect_arr->y + rect_arr->height < y))                                                    {
+			rect_arr = rect_arr->next;
+			continue ;
+		}
+       	if (((x - rect_arr->x < 1.00000000) || ((rect_arr->x + rect_arr->width) - x < 1.00000000)) ||
+           ((y - rect_arr->y < 1.00000000 || ((rect_arr->y + rect_arr->height) - y < 1.00000000))))
+			win->panel[i] = rect_arr->c;
+		if (((Xtl <= Xa) && (Xa <= Xbr)) && ((Ytl <= Ya) && (Ya <= Ybr)))
+			win->panel[i] = rect_arr->c;
+		if (rect_arr->type == 'R')
+			win->panel[i] = rect_arr->c;	
 		rect_arr = rect_arr->next;
 	}
 }
